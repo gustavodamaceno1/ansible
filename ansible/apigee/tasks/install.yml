@@ -1,0 +1,37 @@
+---
+
+- selinux:
+    policy: targeted
+    state: permissive
+
+- name: Install wget
+    yum:
+      name: wget
+      state: latest
+    with_items:
+      yum-utils
+      yum-plugin-priorities
+
+- name: RPM lib
+    command: rpm -qa | grep libdb4
+
+- name: Download RPM from URL
+    get_url: url=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+- name: Install rpm
+    command: sudo rpm -ivh epel-release-latest-7.noarch.rpm
+
+- name: Download apigee
+    shell: 'curl https://software.apigee.com/bootstrap_4.18.05.sh -o /tmp/bootstrap_4.18.05.sh'
+
+- name: Instalação apigee
+    became: yes
+    command: sudo bash /tmp/bootstrap_4.18.05.sh apigeeuser=XPTO apigeepassword=XPTO
+
+- vars_prompt:
+  - name: "release_version"
+    prompt: "Escolha a versão de instalação"
+    default: 1
+
+- name: setup Install
+    command: /opt/apigee/apigee-service/bin/apigee-service apigee-setup install
