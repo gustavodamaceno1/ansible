@@ -1,5 +1,10 @@
 ---
 
+##variaveis:
+
+config_src: configFile.txt
+license_src: license.txt
+
 - selinux:
     policy: targeted
     state: permissive
@@ -35,3 +40,18 @@
 
 - name: setup Install
     command: /opt/apigee/apigee-service/bin/apigee-service apigee-setup install
+
+
+- name: Criando arquivo de configuração
+    synchronize:
+      src: {{config_src}}
+      dest: /tmp/
+
+- name: Arquivo de licença
+    synchronize:
+      src: {{license_src}}
+      dest: /tmp/
+
+- name: Instação AIO apigee
+    command: /opt/apigee/apigee-setup/bin/setup.sh -p aio -f /tmp/configFile
+
