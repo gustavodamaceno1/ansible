@@ -1,0 +1,29 @@
+# With SMTP
+IP1=104.41.41.31
+HOSTIP=104.41.41.31
+ENABLE_SYSTEM_CHECK=n
+ADMIN_EMAIL=gustavo.o.damaceno@accenture.com
+# Admin password must be at least 8 characters long and contain one uppercase
+# letter, one lowercase letter, and one digit or special character
+APIGEE_ADMINPW=AlPKjrG6aRN-0Kbm
+LICENSE_FILE=/tmp/license.txt
+MSIP=104.41.41.31
+LDAP_TYPE=1
+APIGEE_LDAPPW=AlPKjrG6aRN-0Kbm
+MP_POD=gateway
+REGION=dc-1
+ZK_HOSTS="$IP1"
+ZK_CLIENT_HOSTS="$IP1"
+# Must use IP addresses for CASS_HOSTS, not DNS names.
+CASS_HOSTS="$IP1"
+# Default is postgres
+PG_PWD=postgres
+SKIP_SMTP=n
+SMTPHOST=smtp.example.com
+SMTPUSER=smtp@example.com
+# omit for no username
+SMTPPASSWORD=AlPKjrG6aRN-0Kbm
+# omit for no password
+SMTPSSL=n
+SMTPPORT=465
+SMTPMAILFROM="My Company <myco@company.com>"
