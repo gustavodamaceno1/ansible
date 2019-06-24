@@ -1,15 +1,15 @@
 # With SMTP
-IP1=104.41.41.31
-HOSTIP=104.41.41.31
+IP1=1192.xpto
+HOSTIP=192.xpto
 ENABLE_SYSTEM_CHECK=n
-ADMIN_EMAIL=gustavo.o.damaceno@accenture.com
+ADMIN_EMAIL=gmail.xtpo
 # Admin password must be at least 8 characters long and contain one uppercase
 # letter, one lowercase letter, and one digit or special character
-APIGEE_ADMINPW=AlPKjrG6aRN-0Kbm
+APIGEE_ADMINPW=#######
 LICENSE_FILE=/tmp/license.txt
-MSIP=104.41.41.31
+MSIP=192.xpto
 LDAP_TYPE=1
-APIGEE_LDAPPW=AlPKjrG6aRN-0Kbm
+APIGEE_LDAPPW=########
 MP_POD=gateway
 REGION=dc-1
 ZK_HOSTS="$IP1"
@@ -22,8 +22,8 @@ SKIP_SMTP=n
 SMTPHOST=smtp.example.com
 SMTPUSER=smtp@example.com
 # omit for no username
-SMTPPASSWORD=AlPKjrG6aRN-0Kbm
+SMTPPASSWORD=#########
 # omit for no password
 SMTPSSL=n
-SMTPPORT=465
+SMTPPORT=XXX
 SMTPMAILFROM="My Company <myco@company.com>"
