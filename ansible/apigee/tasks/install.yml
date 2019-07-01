@@ -1,57 +1,60 @@
 ---
+- hosts: localhost
+  become: yes
 
-##variaveis:
+# Variaveis de configuração.
 
-config_src: configFile.txt
-license_src: license.txt
+#  vars:
+#    config_src: configFile
+#    license_src: license.txt
+#    config_dest: /tmp/
 
-- selinux:
-    policy: targeted
-    state: permissive
+# Pre-requisitos - Selinux permissive e plugins
+  tasks:
+    - selinux: policy=targeted state=permissive
+      become: yes
+      when: ansible_selinux['status'] == 'enabled' and
+            ansible_selinux['mode'] == 'enforcing'
 
-- name: Install wget
-    yum:
-      name: wget
-      state: latest
-    with_items:
-      yum-utils
-      yum-plugin-priorities
+#    - name: Install wget
+#      yum: name={{ item }} state=installed
+#      with_items:
+#       - yum-utils
+#       - yum-plugin-priorities
 
-- name: RPM lib
-    command: rpm -qa | grep libdb4
+    - name: RPM lib
+      command: rpm -qa | grep libdb4
 
-- name: Download RPM from URL
-    get_url: url=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+# Download do rpm
+    - name: Download RPM from URL
+      get_url:
+        url: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        dest: /tmp/
 
-- name: Install rpm
-    command: sudo rpm -ivh epel-release-latest-7.noarch.rpm
+#    - name: Install rpm
+#      command: rpm -ivh epel-release-latest-7.noarch.rpm
+#      become_method: sudo
 
-- name: Download apigee
-    shell: 'curl https://software.apigee.com/bootstrap_4.18.05.sh -o /tmp/bootstrap_4.18.05.sh'
+    - name: Install Rpm
+      yum:
+        name: /tmp/epel-release-latest-7.noarch.rpm
+        state: present
 
-- name: Instalação apigee
-    became: yes
-    command: sudo bash /tmp/bootstrap_4.18.05.sh apigeeuser=XPTO apigeepassword=XPTO
+    - name: Download apigee
+      shell: 'curl https://software.apigee.com/bootstrap_4.18.05.sh -o /tmp/bootstrap_4.18.05.sh'
 
-- vars_prompt:
-  - name: "release_version"
-    prompt: "Escolha a versão de instalação"
-    default: 1
+    - name: Install apigee
+      command: bash /tmp/bootstrap_4.18.05.sh apigeeuser=bancosanbr apigeepassword=AlPKjrG6aRN-0Kbm
+      become_method: sudo
 
-- name: setup Install
-    command: /opt/apigee/apigee-service/bin/apigee-service apigee-setup install
+    - name: setup Install
+      command: /tmp/bootstrap_4.18.05.sh apigeeuser=bancosanbr apigeepassword=AlPKjrG6aRN-0Kbm JAVA_FIX=I
 
+#    - name: Criando arquivo de configuração
+#      synchronize: src={{ config_src }} dest={{ config_dest }}
 
-- name: Criando arquivo de configuração
-    synchronize:
-      src: {{config_src}}
-      dest: /tmp/
+#    - name: Arquivo de licença
+#      synchronize: src={{ license_src }} dest={{ config_dest }}
 
-- name: Arquivo de licença
-    synchronize:
-      src: {{license_src}}
-      dest: /tmp/
-
-- name: Instação AIO apigee
-    command: /opt/apigee/apigee-setup/bin/setup.sh -p aio -f /tmp/configFile
-
+    - name: Instação AIO apigee
+      command: /opt/apigee/apigee-setup/bin/setup.sh -p aio -f /tmp/configFile
